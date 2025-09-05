@@ -3518,6 +3518,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd7411c3ea6d9e64199f07c874cd618e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _templates: []
+  _panelCreateBallProducts: {fileID: 0}
+  _panelCreatePlatformProducts: {fileID: 0}
+  _saveService: {fileID: 0}
+  _panelShop: {fileID: 0}
+  _buttonPanelInteractions: []
 --- !u!1 &5890045285113504618
 GameObject:
   m_ObjectHideFlags: 0
@@ -4184,7 +4190,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: a33a3f02cf7f33948a3e1eb5377b1114, type: 2}
+  m_Texture: {fileID: 8400000, guid: 5341ba797133ac44687bde16ca3cfa5d, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0

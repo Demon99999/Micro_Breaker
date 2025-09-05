@@ -43,11 +43,29 @@ namespace Shop
 
         public override void OnMove(bool isActive) => this.gameObject.SetActive(isActive);
 
-        public void AddProduct(Product product) => _products.Add(product);
+        public void AddProduct(Product product)
+        {
+            _products.Add(product);
+        }
 
         public void Init(SaveService saveService)
         {
-            
+            _saveService = saveService;
+            CurrentProduct = _products.Where(product => product.Name == _saveService.GetCurrentProduct(_objectsName)).FirstOrDefault();
+
+            if (CurrentProduct == null)
+            {
+                CurrentProduct = _products.First();
+                _saveService.SaveCurrentProduct(_objectsName, CurrentProduct.Name);
+                _accessProductNames.Add(CurrentProduct.Name);
+                _saveService.SaveArrayProducts(_objectsName, _accessProductNames.ToArray());
+            }
+
+            OpenAccess(_saveService.GetArrayProducts(_objectsName));
+            CurrentProduct.Buy();
+            SetCurrentProduct(CurrentProduct);
+            Inited?.Invoke(_products, _panelProduct);
+            gameObject.SetActive(false);
         }
 
         private void OpenAccess(string[] names)
@@ -61,12 +79,22 @@ namespace Shop
 
         private void SetCurrentProduct(Product productSet)
         {
-           
+            foreach (var product in _products)
+                product.SetStatusOfTheSelected(false);
+
+            productSet.SetStatusOfTheSelected(true);
+            CurrentProduct = productSet;
+            _saveService.SaveCurrentProduct(_objectsName, CurrentProduct.Name);
+            Selected?.Invoke();
         }
 
         private void OnSaveProductsName()
         {
-            
+            _accessProductNames = _products.Where(product => product.IsBuy == true).Select(product => product.Name).ToList();
+            _saveService.SaveArrayProducts(_objectsName, _accessProductNames.ToArray());
+            _saveService.SaveCoins(_wallet.Coin);
+
+            Buyed?.Invoke();
         }
     }
 }

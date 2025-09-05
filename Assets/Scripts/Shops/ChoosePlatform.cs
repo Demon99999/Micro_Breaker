@@ -81,8 +81,10 @@ namespace Assets.Scripts.Shops
         public async Task RotateMove()
         {
             _rotateTween = CurrentTemplate.transform.DORotate(new Vector3(MinValue, RotateY, MinValue), DurationRotate, RotateMode.FastBeyond360).
-                                     SetLoops(-LoopValue).SetRelative().SetEase(Ease.Linear);
+                SetLoops(-LoopValue).SetRelative().SetEase(Ease.Linear);
+
             Task tween = _rotateTween.AsyncWaitForCompletion();
+
             await tween;
         }
 

@@ -24,7 +24,7 @@ namespace Assets.Scripts.Shops
             foreach (var buttonPanelInteraction in _buttonPanelInteractions)
                 buttonPanelInteraction.Clicked += OnPlaySound;
 
-            //_saveService.Loaded += OnCreate;
+            _saveService.Loaded += OnCreate;
         }
 
         private void OnDisable()
@@ -32,7 +32,7 @@ namespace Assets.Scripts.Shops
             foreach (var buttonPanelInteraction in _buttonPanelInteractions)
                 buttonPanelInteraction.Clicked -= OnPlaySound;
 
-            //_saveService.Loaded -= OnCreate;
+            _saveService.Loaded -= OnCreate;
         }
 
         private void OnPlaySound(bool isAction)
@@ -44,7 +44,8 @@ namespace Assets.Scripts.Shops
         {
             _templates = _templates.OrderBy(template => template.Price).ToArray();
 
-            foreach (var template in _templates) _products.Add(new Product(template));
+            foreach (var template in _templates)
+                _products.Add(new Product(template));
 
             foreach (var product in _products)
             {
