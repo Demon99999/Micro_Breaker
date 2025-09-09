@@ -11,13 +11,13 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Shop
+  - Location
+  - Ground
+  - Ball
+  - Bullet
+  - Box
+  - Booster
   - 
   - 
   - 
@@ -40,4 +40,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ui
+    uniqueID: 2122543075
     locked: 0
