@@ -22,11 +22,14 @@ namespace Assets.Scripts.UI.Buttons
 
         protected override void OnClick()
         {
-            if (_panelClosePanels != null) ClosePanels();
+            if (_panelClosePanels != null)
+                ClosePanels();
 
-            if (_panelOpenPanel != null) _panelOpenPanel.OnMove(_isStateOnOpenPanel);
+            if (_panelOpenPanel != null)
+                _panelOpenPanel.OnMove(_isStateOnOpenPanel);
 
-            if (_buttonEnable != null) _buttonEnable.gameObject.SetActive(true);
+            if (_buttonEnable != null)
+                _buttonEnable.gameObject.SetActive(true);
 
             HaveTimeScale();
             SwitchObject();
@@ -34,7 +37,10 @@ namespace Assets.Scripts.UI.Buttons
             Clicked?.Invoke(_isStateOnOpenPanel);
         }
 
-        public void SetStartStateButton() => IsClick = false;
+        public void SetStartStateButton()
+        {
+            IsClick = false;
+        }
 
         private void ClosePanels()
         {

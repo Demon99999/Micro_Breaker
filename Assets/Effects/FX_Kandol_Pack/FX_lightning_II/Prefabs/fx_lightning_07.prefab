@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1595871974710121039}
   - component: {fileID: 1595871974710121036}
   - component: {fileID: 1595871974710121037}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: fx_lightning_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
