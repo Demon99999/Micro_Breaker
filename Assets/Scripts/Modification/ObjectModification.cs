@@ -24,11 +24,15 @@ namespace Assets.Scripts.Modification
 
         protected float GetScaleValue(BoosterNames boosterNames)
         {
-            if (boosterNames == BoosterNames.Negative) return NegativeScaleValue;
+            if (boosterNames == BoosterNames.Negative)
+                return NegativeScaleValue;
 
             return PositiveScaleValue;
         }
 
-        protected void ChangeScale(Vector3 scale) => Transform.localScale = scale;
+        protected void ChangeScale(Vector3 scale)
+        {
+            Transform.localScale = scale;
+        }
     }
 }
