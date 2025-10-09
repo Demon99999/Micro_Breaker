@@ -54,6 +54,17 @@ namespace Assets.Scripts.UI.Panels
             _locationCreateView.gameObject.SetActive(isActive);
         }
 
+        //public override void OnMove(bool isActive)
+        //{
+        //    if (IsOpen == isActive)
+        //        return;
+
+        //    IsOpen = isActive;
+        //    base.OnMove(isActive);
+        //    StartCoroutine(MovePanelCoroutine(isActive));
+        //    _locationCreateView.gameObject.SetActive(isActive);
+        //}
+
         public void Init(LocationObject locationObject)
         {
             LocationObject = locationObject;

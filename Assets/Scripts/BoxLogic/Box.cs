@@ -78,7 +78,8 @@ namespace Assets.Scripts.BoxLogic
 
         public void InitBooster(BoosterEffect booster, ParticleSystem particleSystem)
         {
-            if (booster != null) _booster = booster;
+            if (booster != null)
+                _booster = booster;
 
             _particleSystem = particleSystem;
         }

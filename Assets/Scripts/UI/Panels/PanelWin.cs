@@ -1,6 +1,7 @@
 using System;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Sound;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,6 +44,12 @@ namespace Assets.Scripts.UI.Panels
             base.OnMove(isActive);
             await MovePanel(isActive);
         }
+
+        //public override void OnMove(bool isActive)
+        //{
+        //    base.OnMove(isActive);
+        //    StartCoroutine(MovePanelCoroutine(isActive));
+        //}
 
         private async void OnClick(string sceneName)
         {

@@ -2,6 +2,7 @@ using System;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Infrastructure;
 using Assets.Scripts.Sound;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,15 +23,19 @@ namespace Assets.Scripts.UI.Panels
         private void OnEnable()
         {
             //_buttonTryAgain.onClick.AddListener(() => { _promotionalVideo.ShowInterstitialAd(); });
-            //_buttonExit.onClick.AddListener(() => { OnClickRestart(ScenesName.MainMenu.ToString()); });
+            _buttonExit.onClick.AddListener(() => { OnClickRestart(ScenesName.MainMenu.ToString()); });
             //_promotionalVideo.ClosedCallBack += () => { OnClickRestart(ScenesName.Game.ToString()); };
+
+            _buttonTryAgain.onClick.AddListener(() => { OnClickRestart(ScenesName.Game.ToString()); });
         }
 
         private void OnDisable()
         {
             //_buttonTryAgain.onClick.RemoveListener(() => { _promotionalVideo.ShowInterstitialAd(); });
-            //_buttonExit.onClick.RemoveListener(() => { OnClickRestart(ScenesName.MainMenu.ToString()); });
+            _buttonExit.onClick.RemoveListener(() => { OnClickRestart(ScenesName.MainMenu.ToString()); });
             //_promotionalVideo.ClosedCallBack -= () => { OnClickRestart(ScenesName.Game.ToString()); };
+
+            _buttonTryAgain.onClick.RemoveListener(() => { OnClickRestart(ScenesName.Game.ToString()); });
         }
 
 
@@ -39,6 +44,12 @@ namespace Assets.Scripts.UI.Panels
             base.OnMove(isActive);
             await MovePanel(isActive);
         }
+
+        //public override void OnMove(bool isActive)
+        //{
+        //    base.OnMove(isActive);
+        //    StartCoroutine(MovePanelCoroutine(isActive));
+        //}
 
         public void Fill(string bricksSmashed, string score)
         {

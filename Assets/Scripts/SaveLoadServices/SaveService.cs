@@ -13,25 +13,25 @@ namespace Assets.Scripts.SaveLoadServices
         private const int MaxValue = 1;
 
         private readonly SaveGameProgress _saveGameProgress = new SaveGameProgress();
-        private GameProgress _gameProgress = new GameProgress();
+        private GameProgress2 _gameProgress2 = new GameProgress2();
 
         public event Action Loaded;
 
-        public int Coins => _gameProgress.Coins;
+        public int Coins => _gameProgress2.Coins;
 
-        public string CurrentBall => _gameProgress.CurrentBall;
+        public string CurrentBall => _gameProgress2.CurrentBall;
 
-        public string CurrentPlatform => _gameProgress.CurrentPlatform;
+        public string CurrentPlatform => _gameProgress2.CurrentPlatform;
 
-        public string[] Balls => _gameProgress.Balls;
+        public string[] Balls => _gameProgress2.Balls;
 
-        public string[] Platforms => _gameProgress.Platforms;
+        public string[] Platforms => _gameProgress2.Platforms;
 
-        public LevelData[] LevelDatas => _gameProgress.LevelDatas;
+        public LevelData[] LevelDatas => _gameProgress2.LevelDatas;
 
-        public int LevelCount => _gameProgress.LevelCount;
+        public int LevelCount => _gameProgress2.LevelCount;
 
-        public LevelData LevelData => _gameProgress.CurrentLevelData;
+        public LevelData LevelData => _gameProgress2.CurrentLevelData;
 
         private void Start()
         {
@@ -50,7 +50,7 @@ namespace Assets.Scripts.SaveLoadServices
 
         public int GetCoins()
         {
-            return _gameProgress.Coins;
+            return _gameProgress2.Coins;
         }
 
         public string GetCurrentProduct(ObjectsName objectsName)
@@ -75,9 +75,9 @@ namespace Assets.Scripts.SaveLoadServices
         {
             int scale = 0;
 
-            if (objectsName == ObjectsName.Ball) scale = _gameProgress.ScaleBall;
+            if (objectsName == ObjectsName.Ball) scale = _gameProgress2.ScaleBall;
 
-            if (objectsName == ObjectsName.Platform) scale = _gameProgress.ScalePlatform;
+            if (objectsName == ObjectsName.Platform) scale = _gameProgress2.ScalePlatform;
 
             return scale;
         }
@@ -86,11 +86,11 @@ namespace Assets.Scripts.SaveLoadServices
         {
             List<AdditionalImprovementValue> additionalImprovementValue = new List<AdditionalImprovementValue>();
 
-            for (int i = 0; i < _gameProgress.AdditionalImprovementDatas.Length; i++)
+            for (int i = 0; i < _gameProgress2.AdditionalImprovementDatas.Length; i++)
             {
-                additionalImprovementValue.Add(new AdditionalImprovementValue(_gameProgress.AdditionalImprovementDatas[i].UpgradeName,
-                                      _gameProgress.AdditionalImprovementDatas[i].Value,
-                                      _gameProgress.AdditionalImprovementDatas[i].ValueSelect));
+                additionalImprovementValue.Add(new AdditionalImprovementValue(_gameProgress2.AdditionalImprovementDatas[i].UpgradeName,
+                                      _gameProgress2.AdditionalImprovementDatas[i].Value,
+                                      _gameProgress2.AdditionalImprovementDatas[i].ValueSelect));
             }
 
             return additionalImprovementValue;
@@ -98,12 +98,12 @@ namespace Assets.Scripts.SaveLoadServices
 
         public List<LevelData> GetLevelDatas()
         {
-            return _gameProgress.LevelDatas.ToList();
+            return _gameProgress2.LevelDatas.ToList();
         }
 
         public void SaveLevelDatas(List<LevelData> locationObjectDatas)
         {
-            _gameProgress.LevelDatas = locationObjectDatas.ToArray();
+            _gameProgress2.LevelDatas = locationObjectDatas.ToArray();
             Save();
         }
 
@@ -121,17 +121,17 @@ namespace Assets.Scripts.SaveLoadServices
                 });
             }
 
-            _gameProgress.AdditionalImprovementDatas = additionalImprovementData.ToArray();
+            _gameProgress2.AdditionalImprovementDatas = additionalImprovementData.ToArray();
             Save();
         }
 
         public void SaveScale(bool isCanScale, ObjectsName objectsName)
         {
             if (objectsName == ObjectsName.Ball)
-                _gameProgress.ScaleBall = isCanScale ? MaxValue : MinValue;
+                _gameProgress2.ScaleBall = isCanScale ? MaxValue : MinValue;
 
             if (objectsName == ObjectsName.Platform)
-                _gameProgress.ScalePlatform = isCanScale ? MaxValue : MinValue;
+                _gameProgress2.ScalePlatform = isCanScale ? MaxValue : MinValue;
 
             Save();
         }
@@ -139,10 +139,10 @@ namespace Assets.Scripts.SaveLoadServices
         public void SaveCurrentProduct(ObjectsName objectsName, string currentName)
         {
             if (objectsName == ObjectsName.Ball)
-                _gameProgress.CurrentBall = currentName;
+                _gameProgress2.CurrentBall = currentName;
 
             if (objectsName == ObjectsName.Platform)
-                _gameProgress.CurrentPlatform = currentName;
+                _gameProgress2.CurrentPlatform = currentName;
 
             Save();
         }
@@ -150,40 +150,40 @@ namespace Assets.Scripts.SaveLoadServices
         public void SaveArrayProducts(ObjectsName objectsName, string[] Names)
         {
             if (objectsName == ObjectsName.Ball)
-                _gameProgress.Balls = Names;
+                _gameProgress2.Balls = Names;
 
             if (objectsName == ObjectsName.Platform)
-                _gameProgress.Platforms = Names;
+                _gameProgress2.Platforms = Names;
 
             Save();
         }
 
         public void SaveCoins(int amount)
         {
-            _gameProgress.Coins = amount;
+            _gameProgress2.Coins = amount;
             Save();
         }
 
         public void SaveLevel(int level)
         {
-            _gameProgress.LevelCount = level;
+            _gameProgress2.LevelCount = level;
             Save();
         }
 
         public void SaveCurrentLevelData(LevelData currentLevelData)
         {
-            _gameProgress.CurrentLevelData = currentLevelData;
+            _gameProgress2.CurrentLevelData = currentLevelData;
             Save();
         }
 
         private void Save()
         {
-            _saveGameProgress.Save(_gameProgress);
+            _saveGameProgress.Save(_gameProgress2);
         }
 
-        private void OnFill(GameProgress gameData)
+        private void OnFill(GameProgress2 gameData)
         {
-            _gameProgress = gameData;
+            _gameProgress2 = gameData;
             Loaded?.Invoke();
         }
     }

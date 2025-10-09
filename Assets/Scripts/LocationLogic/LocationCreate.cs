@@ -24,10 +24,12 @@ namespace Assets.Scripts.LocationLogic
         public void Init(LevelData locationObjectData)
         {
             _transform = transform;
+
             Location newLocation = _locations.Where(location => location.LocationName == locationObjectData.LocationName &&
                                                     location.AdditionaValue == locationObjectData.AdditionaValue).FirstOrDefault();
 
-            if (newLocation == null) return;
+            if (newLocation == null)
+                return;
 
             CurrentLocation = Instantiate(newLocation, _transform);
             CurrentLocation.Init(_boardsContainer, _boxParticleSystem, Created);

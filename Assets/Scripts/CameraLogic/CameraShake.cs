@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Linq;
 using Assets.Scripts.BoosterLogic;
+using Assets.Scripts.BoosterLogic.Boosters;
 using Assets.Scripts.BoxLogic;
 using Assets.Scripts.LocationLogic;
 using Cinemachine;
@@ -36,7 +38,7 @@ namespace Assets.Scripts.CameraLogic
             {
                 foreach (Box box in _locationCreate.CurrentLocation.BoxContainer.Boxes) box.Died += OnShake;
 
-                foreach (Box box in _boxesFalling.Boxes) box.Died += OnShake;
+                //foreach (Box box in _boxesFalling.Boxes) box.Died += OnShake;
             };
         }
 

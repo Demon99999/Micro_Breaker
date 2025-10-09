@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Assets.Scripts.Enums;
 using Assets.Scripts.SaveLoadServices;
 using DG.Tweening;
@@ -23,6 +24,8 @@ namespace Assets.Scripts.LocationLogic
         [SerializeField] private Color _colorPassed;
         [SerializeField] private Color _colorStart;
         [SerializeField] private Color _colorAccess;
+        [SerializeField] private GameObject _cirkle;
+        [SerializeField] private List<GameObject> _line;
 
         public LocationName Name => _name;
 
@@ -64,12 +67,30 @@ namespace Assets.Scripts.LocationLogic
         private void SetAccess()
         {
             _boxTransform.GetComponent<MeshRenderer>().material.color = _colorAccess;
+            _cirkle.GetComponent<SpriteRenderer>().color = _colorAccess;
+            AccessLine(_colorAccess);
 
             if (_isActive)
+            {
                 _boxTransform.GetComponent<MeshRenderer>().material.color = _colorStart;
+                _cirkle.GetComponent<SpriteRenderer>().color = _colorStart;
+                AccessLine(_colorStart);
+            }
 
             if (IsPassed)
+            {
                 _boxTransform.GetComponent<MeshRenderer>().material.color = _colorPassed;
+                _cirkle.GetComponent<SpriteRenderer>().color = _colorPassed;
+                AccessLine(_colorPassed);
+            }
+        }
+
+        private void AccessLine(Color color)
+        {
+            for (int i = 0; i < _line.Count; i++)
+            {
+                _line[i].GetComponent<SpriteRenderer>().color = color;
+            }
         }
     }
 }

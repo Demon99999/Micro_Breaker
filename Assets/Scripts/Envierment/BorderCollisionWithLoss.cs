@@ -30,6 +30,15 @@ namespace Assets.Scripts.Envierment
         {
             _waitForSeconds = new WaitForSeconds(WaitSeconds);
             _collider = GetComponent<Collider>();
+
+            if (_boostersContainer == null)
+                _boostersContainer = FindObjectOfType<BoostersContainer>(true);
+
+            if (_platform == null)
+                _platform = FindObjectOfType<Platform>(true);
+
+            if (_ball == null)
+                _ball = FindObjectOfType<Ball>(true);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -41,9 +50,10 @@ namespace Assets.Scripts.Envierment
             {
                 if (ball.name == _ball.name)
                 {
+                    SafeResetBoosters();
+
                     ball.Die();
                     _platform.Die();
-                    _boostersContainer.Reset();
                     TryGiveExtraLive();
                     return;
                 }
@@ -52,9 +62,33 @@ namespace Assets.Scripts.Envierment
             }
         }
 
+        private void SafeResetBoosters()
+        {
+            try
+            {
+                if (_boostersContainer != null && _boostersContainer.gameObject.activeInHierarchy)
+                {
+                    _boostersContainer.Reset();
+                }
+                else
+                {
+                    Debug.LogWarning("BoostersContainer not available, searching...");
+                    _boostersContainer = FindObjectOfType<BoostersContainer>(true);
+                    if (_boostersContainer != null)
+                    {
+                        _boostersContainer.Reset();
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Exception in SafeResetBoosters: {e}");
+            }
+        }
+
         private void TryGiveExtraLive()
         {
-            if (_ball.ExtraLive <= MinExtraLive)
+            if (_ball == null || _ball.ExtraLive <= MinExtraLive)
             {
                 Lost?.Invoke();
                 return;
@@ -68,12 +102,21 @@ namespace Assets.Scripts.Envierment
 
         private IEnumerator TakeExtraLive()
         {
-            _particleSystem.Play();
+            if (_particleSystem != null)
+                _particleSystem.Play();
+
             yield return _waitForSeconds;
-            _platform.GiveLive();
-            _ball.GiveLive();
-            _particleSystem.Stop();
-            StopCoroutine(_coroutine);
+
+            if (_platform != null && _ball != null)
+            {
+                _platform.GiveLive();
+                _ball.GiveLive();
+            }
+
+            if (_particleSystem != null)
+                _particleSystem.Stop();
+
+            _coroutine = null;
         }
     }
 }

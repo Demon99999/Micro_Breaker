@@ -40,6 +40,15 @@ namespace Assets.Scripts.UI
 
         private WaitForSeconds _waitForSeconds;
         private Coroutine _coroutine;
+        private bool _isResetting = false;
+
+        private void Awake()
+        {
+            if (_boostersContainer == null)
+            {
+                _boostersContainer = FindObjectOfType<BoostersContainer>(true);
+            }
+        }
 
         private void OnEnable()
         {
@@ -65,8 +74,7 @@ namespace Assets.Scripts.UI
         private void OnOpenPanelWin(string time)
         {
             _virtualEndCamera.Priority = Priority;
-            _boostersContainer.Reset();
-            _boostersContainer.gameObject.SetActive(false);
+
             _waitForSeconds = new WaitForSeconds(DurationWin);
 
             PlayOpen(_panelWin, _waitForSeconds, () =>
@@ -74,18 +82,62 @@ namespace Assets.Scripts.UI
                 _panelWin.Fill(time, _counter.CountLiveBoxs.ToString(), _wallet.Coin.ToString());
                 SaveGameProgress();
             });
+
+            SafeResetAndDisableBoosters();
         }
 
         private void OnOpenPanelLoss()
         {
-            _boostersContainer.Reset();
-            _boostersContainer.gameObject.SetActive(false);
             _waitForSeconds = new WaitForSeconds(DurationLoss);
 
             PlayOpen(_panelLoss, _waitForSeconds, () =>
             {
                 _panelLoss.Fill(_counter.CountLiveBoxs.ToString(), _wallet.Coin.ToString());
             });
+
+            SafeResetAndDisableBoosters();
+        }
+
+        private void SafeResetAndDisableBoosters()
+        {
+            if (_isResetting) return;
+
+            _isResetting = true;
+
+            try
+            {
+                if (_boostersContainer != null)
+                {
+                    if (_boostersContainer.gameObject.activeInHierarchy)
+                    {
+                        _boostersContainer.Reset();
+                    }
+
+                    StartCoroutine(DisableBoostersWithDelay());
+                }
+                else
+                {
+                    Debug.LogWarning("BoostersContainer is null in GameState");
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Exception in SafeResetAndDisableBoosters: {e}");
+            }
+            finally
+            {
+                _isResetting = false;
+            }
+        }
+
+        private IEnumerator DisableBoostersWithDelay()
+        {
+            yield return new WaitForEndOfFrame();
+
+            if (_boostersContainer != null)
+            {
+                _boostersContainer.gameObject.SetActive(false);
+            }
         }
 
         private void PlayOpen(Panel panel, WaitForSeconds waitForSeconds, Action action = null)
@@ -98,13 +150,32 @@ namespace Assets.Scripts.UI
 
         private IEnumerator MovePanel(Panel panel, WaitForSeconds waitForSeconds, Action action = null)
         {
-            _buttonPanelInteraction.gameObject.SetActive(false);
-            _inputPointMovement.gameObject.SetActive(false);
-            _ballMovement.gameObject.SetActive(false);
+            SafeDisableComponents();
+
             _playerInput.SetControl();
             yield return waitForSeconds;
+
             panel.OnMove(true);
             action?.Invoke();
+        }
+
+        private void SafeDisableComponents()
+        {
+            try
+            {
+                if (_buttonPanelInteraction != null)
+                    _buttonPanelInteraction.gameObject.SetActive(false);
+
+                if (_inputPointMovement != null)
+                    _inputPointMovement.gameObject.SetActive(false);
+
+                if (_ballMovement != null)
+                    _ballMovement.gameObject.SetActive(false);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Exception in SafeDisableComponents: {e}");
+            }
         }
 
         private void SaveGameProgress()
