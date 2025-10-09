@@ -11,12 +11,25 @@ namespace Assets.Scripts.BoosterLogic
 
         private List<AbstractBooster> _boosters;
         private Transform _transform;
+        private bool _isInitialized = false;
+        private bool _isResetting = false;
 
-        public List<AbstractBooster> AbstractBoosters => _boosters;
+        public List<AbstractBooster> AbstractBoosters => _boosters ?? new List<AbstractBooster>();
+
+        private void Awake()
+        {
+            if (_boosters == null)
+            {
+                Fill();
+            }
+
+            _isInitialized = true;
+        }
 
         private void OnDisable()
         {
-            foreach (var booster in _boosters) booster.TimeRunning -= OnPlaySound;
+            foreach (var booster in _boosters)
+                booster.TimeRunning -= OnPlaySound;
         }
 
         public void Fill()
@@ -47,7 +60,62 @@ namespace Assets.Scripts.BoosterLogic
 
         public void Reset()
         {
-            foreach (var booster in _boosters) booster.StopAction(booster.BoosterEffect);
+            if (_isResetting)
+            {
+                Debug.LogWarning("BoostersContainer is already resetting");
+                return;
+            }
+
+            _isResetting = true;
+
+            try
+            {
+                Debug.Log($"BoostersContainer.Reset called. Boosters count: {_boosters?.Count}");
+
+                if (_boosters == null || _boosters.Count == 0)
+                {
+                    Debug.LogWarning("Boosters list is null or empty");
+                    return;
+                }
+
+                // —оздаем копию списка дл€ безопасной итерации
+                var boostersCopy = new List<AbstractBooster>(_boosters);
+
+                foreach (var booster in boostersCopy)
+                {
+                    if (booster == null)
+                    {
+                        Debug.LogWarning("Null booster in list, skipping");
+                        continue;
+                    }
+
+                    if (!booster.gameObject.activeInHierarchy)
+                    {
+                        Debug.LogWarning($"Booster {booster.name} is inactive, skipping");
+                        continue;
+                    }
+
+                    if (booster.BoosterEffect == null)
+                    {
+                        Debug.LogError($"BoosterEffect is null for booster: {booster.name}");
+                        continue;
+                    }
+
+                    try
+                    {
+                        Debug.Log($"Stopping booster: {booster.name}");
+                        booster.StopAction(booster.BoosterEffect);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError($"Error stopping booster {booster.name}: {e.Message}");
+                    }
+                }
+            }
+            finally
+            {
+                _isResetting = false;
+            }
         }
 
         private void OnPlaySound()

@@ -5,8 +5,8 @@ namespace Assets.Scripts.Modification
 {
     public abstract class ObjectModification : MonoBehaviour
     {
-        private const float NegativeScaleValue = 0.8f;
-        private const float PositiveScaleValue = 1.2f;
+        private const float NegativeScaleValue = 0.5f;
+        private const float PositiveScaleValue = 1.5f;
 
         public float DefultScaleValue { get; private set; }
 
@@ -24,11 +24,15 @@ namespace Assets.Scripts.Modification
 
         protected float GetScaleValue(BoosterNames boosterNames)
         {
-            if (boosterNames == BoosterNames.Negative) return NegativeScaleValue;
+            if (boosterNames == BoosterNames.Negative)
+                return NegativeScaleValue;
 
             return PositiveScaleValue;
         }
 
-        protected void ChangeScale(Vector3 scale) => Transform.localScale = scale;
+        protected void ChangeScale(Vector3 scale)
+        {
+            Transform.localScale = scale;
+        }
     }
 }

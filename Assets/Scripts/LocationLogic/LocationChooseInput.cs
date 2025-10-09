@@ -14,15 +14,23 @@ namespace Assets.Scripts.LocationLogic
 
         public bool IsActive { get; private set; } = true;
 
-        public void SetFirstLocationObject(Vector3 inputMouse) => _firstLocationObject = TryGetLocation(inputMouse);
+        public void SetFirstLocationObject(Vector3 inputMouse)
+        {
+            _firstLocationObject = TryGetLocation(inputMouse);
+        }
 
-        public void SetLastLocationObject(Vector3 inputMouse) => _lastLocationObject = TryGetLocation(inputMouse);
+        public void SetLastLocationObject(Vector3 inputMouse)
+        {
+            _lastLocationObject = TryGetLocation(inputMouse);
+        }
 
         public void LoadLocation()
         {
-            if (_firstLocationObject == null || _lastLocationObject == null) return;
+            if (_firstLocationObject == null || _lastLocationObject == null)
+                return;
 
-            if (_firstLocationObject.Name != _lastLocationObject.Name) return;
+            if (_firstLocationObject.Name != _lastLocationObject.Name)
+                return;
 
             if (IsActive == true)
             {
@@ -42,6 +50,7 @@ namespace Assets.Scripts.LocationLogic
                 hit.collider.TryGetComponent(out LocationObject locationObject);
                 return locationObject;
             }
+
             return null;
         }
     }

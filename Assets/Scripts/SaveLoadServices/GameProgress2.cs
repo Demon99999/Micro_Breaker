@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.SaveLoadServices
 {
-    public class GameProgress
+    public class GameProgress2
     {
         public int Coins = 10000;
         public int LevelCount = 1;

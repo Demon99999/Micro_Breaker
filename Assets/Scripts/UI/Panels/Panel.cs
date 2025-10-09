@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -38,24 +41,57 @@ namespace Assets.Scripts.UI.Panels
             if (_isActiveAtStart == true) gameObject.SetActive(false);
         }
 
-        protected async Task MovePanel(bool isActive, Action OnActive = null)
+        protected async UniTask MovePanel(bool isActive, Action OnActive = null)
         {
-            if (isActive == true) gameObject.SetActive(isActive);
 
             if (isActive)
-            {
-                _tween = _rectTransform.DOAnchorPosY(_topPosition, _tweenDurationOpen).SetUpdate(true);
-                await _tween.AsyncWaitForCompletion();
-            }
-            else
-            {
-                _tween = _rectTransform.DOAnchorPosY(_middlePosition, _tweenDurationClose).SetUpdate(true);
-                await _tween.AsyncWaitForCompletion();
-            }
+                gameObject.SetActive(true);
+
+            float targetY = isActive ? _topPosition : _middlePosition;
+            float duration = isActive ? _tweenDurationOpen : _tweenDurationClose;
+
+            await _rectTransform.DOAnchorPosY(targetY, duration)
+                .SetUpdate(true)
+                .AsyncWaitForCompletion();
 
             gameObject.SetActive(isActive);
-
             OnActive?.Invoke();
+            //if (isActive == true) gameObject.SetActive(isActive);
+
+            //if (isActive)
+            //{
+            //    _tween = _rectTransform.DOAnchorPosY(_topPosition, _tweenDurationOpen).SetUpdate(true);
+            //    await _tween.AsyncWaitForCompletion();
+            //}
+            //else
+            //{
+            //    _tween = _rectTransform.DOAnchorPosY(_middlePosition, _tweenDurationClose).SetUpdate(true);
+            //    await _tween.AsyncWaitForCompletion();
+            //}
+
+            //gameObject.SetActive(isActive);
+
+            //OnActive?.Invoke();
         }
+
+        //protected IEnumerator MovePanelCoroutine(bool isActive, Action OnActive = null)
+        //{
+        //    if (isActive == true)
+        //        gameObject.SetActive(isActive);
+
+        //    if (isActive)
+        //    {
+        //        _tween = _rectTransform.DOAnchorPosY(_topPosition, _tweenDurationOpen).SetUpdate(true);
+        //        yield return _tween.WaitForCompletion();
+        //    }
+        //    else
+        //    {
+        //        _tween = _rectTransform.DOAnchorPosY(_middlePosition, _tweenDurationClose).SetUpdate(true);
+        //        yield return _tween.WaitForCompletion();
+        //    }
+
+        //    gameObject.SetActive(isActive);
+        //    OnActive?.Invoke();
+        //}
     }
 }

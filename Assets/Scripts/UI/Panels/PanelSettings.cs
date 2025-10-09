@@ -38,6 +38,13 @@ namespace Assets.Scripts.UI.Panels
             await MovePanel(isActive);
         }
 
+        //public override void OnMove(bool isActive)
+        //{
+        //    _backGround?.gameObject.SetActive(isActive);
+        //    base.OnMove(isActive);
+        //    StartCoroutine(MovePanelCoroutine(isActive));
+        //}
+
         private void LoadAudioSettings(ButtonSettingAudio buttonSettingAudio)
         {
             _currentVolume = PlayerPrefs.GetFloat(buttonSettingAudio.AudioName.ToString());

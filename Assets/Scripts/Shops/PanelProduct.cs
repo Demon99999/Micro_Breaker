@@ -39,6 +39,13 @@ namespace Assets.Scripts.Shops
             _backGround.gameObject.SetActive(isAction);
         }
 
+        //public override void OnMove(bool isAction)
+        //{
+        //    base.OnMove(isAction);
+        //    StartCoroutine(MovePanelCoroutine(isAction));
+        //    _backGround.gameObject.SetActive(isAction);
+        //}
+
         public void Init(Product product)
         {
             _product = product;

@@ -59,6 +59,13 @@ namespace Assets.Scripts.UI.Panels
             await MovePanel(isAction);
         }
 
+        //public override void OnMove(bool isAction)
+        //{
+        //    _backGround.gameObject.SetActive(isAction);
+        //    base.OnMove(isAction);
+        //    StartCoroutine(MovePanelCoroutine(isAction));
+        //}
+
         private void OnSetAccess(AdditionalImprovement.AdditionalImprovement upgrade)
         {
             upgrade.SetState(false);
